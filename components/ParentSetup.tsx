@@ -36,7 +36,7 @@ const ParentSetup: React.FC<ParentSetupProps> = ({ text, onTextChange, onStart, 
   const lineNumbers = Array.from({ length: Math.max(text.split('\n').length, 1) }, (_, i) => i + 1).join('\n');
 
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center">
+    <div className="flex flex-col items-center text-center">
       <h2 className="text-xl font-bold text-slate-700 mb-2">받아쓰기 내용 입력</h2>
       <p className="text-slate-500 mb-6 max-w-md">
         아이에게 들려줄 단어나 문장을 한 줄에 하나씩 입력해주세요.
@@ -78,7 +78,7 @@ const ParentSetup: React.FC<ParentSetupProps> = ({ text, onTextChange, onStart, 
         </label>
       </div>
 
-      <div className="flex items-center gap-4 mt-4">
+      <div className="flex items-center justify-center gap-4 mt-4 p-4 bg-slate-50 rounded-lg shadow">
         <button
           onClick={handleSave}
           className="flex items-center gap-2 bg-blue-500 text-white font-bold py-3 px-8 rounded-xl shadow-md hover:bg-blue-600 transition-all duration-150 border-b-4 border-blue-700 active:translate-y-px active:border-b-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"

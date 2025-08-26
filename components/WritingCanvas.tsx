@@ -28,6 +28,8 @@ const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>(({ ini
     if(ctx){
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
+        ctx.imageSmoothingEnabled = true; // Enable anti-aliasing
+        ctx.imageSmoothingQuality = 'high'; // Set quality to high
         setDrawCtx(ctx);
     }
   }, []);
@@ -112,7 +114,7 @@ const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>(({ ini
   };
 
   const startDrawing = (event: React.MouseEvent | React.TouchEvent) => {
-    event.preventDefault();
+    // event.preventDefault(); // Handled in JSX
     if (!drawCtx) return;
     setupContextForTool();
     const { x, y } = getCoords(event);
@@ -122,7 +124,7 @@ const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>(({ ini
   };
 
   const draw = (event: React.MouseEvent | React.TouchEvent) => {
-    event.preventDefault();
+    // event.preventDefault(); // Handled in JSX
     if (!isDrawing || !drawCtx) return;
     const { x, y } = getCoords(event);
     drawCtx.lineTo(x, y);
@@ -171,14 +173,14 @@ const WritingCanvas = forwardRef<WritingCanvasHandle, WritingCanvasProps>(({ ini
         ref={drawCanvasRef}
         width={800}
         height={600}
-        className="absolute top-0 left-0 w-full h-full"
+        className="absolute top-0 left-0 w-full h-full touch-action-none"
         onMouseDown={startDrawing}
         onMouseMove={draw}
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
-        onTouchStart={startDrawing}
-        onTouchMove={draw}
-        onTouchEnd={stopDrawing}
+        onTouchStart={(e) => { e.preventDefault(); startDrawing(e); }}
+        onTouchMove={(e) => { e.preventDefault(); draw(e); }}
+        onTouchEnd={(e) => { e.preventDefault(); stopDrawing(); }}
       />
     </div>
   );
