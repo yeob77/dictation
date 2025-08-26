@@ -184,7 +184,7 @@ const DictationView: React.FC<DictationViewProps> = ({ dictations, onFinish, onB
         </div>
       </div>
       
-      <div className="flex-grow w-full self-stretch my-2 overflow-y-auto min-h-[200px]">
+      <div className="flex-grow w-full self-stretch my-2 overflow-y-auto min-h-0">
         <WritingCanvas 
           key={currentIdx} 
           ref={canvasRef} 
