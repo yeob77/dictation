@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpenIcon, TrashIcon } from './icons';
+import { BookOpenIcon, TrashIcon, ClipboardListIcon } from './icons';
 
 interface SavedDictationsProps {
   savedTexts: { id: string; content: string }[];
@@ -9,7 +9,13 @@ interface SavedDictationsProps {
 
 const SavedDictations: React.FC<SavedDictationsProps> = ({ savedTexts, onSelect, onDelete }) => {
   if (savedTexts.length === 0) {
-    return null; // Don't render anything if there are no saved texts
+    return (
+      <div className="w-full mt-6 p-4 text-center bg-white/50 rounded-lg shadow-inner">
+        <ClipboardListIcon className="w-12 h-12 mx-auto text-slate-400" />
+        <h3 className="mt-2 text-lg font-bold text-slate-600">저장된 목록 없음</h3>
+        <p className="mt-1 text-sm text-slate-500">첫 받아쓰기 내용을 저장해보세요!</p>
+      </div>
+    );
   }
 
   return (

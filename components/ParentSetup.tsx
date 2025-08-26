@@ -26,21 +26,11 @@ const ParentSetup: React.FC<ParentSetupProps> = ({ text, onTextChange, onStart, 
   };
 
   const handleStart = () => {
-    const words = text.split('\n').map(word => word.trim()).filter(word => word.length > 0);
-    if (words.length > 0) {
-      onStart(shuffle);
-    } else {
-      alert('받아쓰기 할 내용을 한 줄 이상 입력해주세요.');
-    }
+    onStart(shuffle);
   };
   
   const handleSave = () => {
-    const words = text.split('\n').map(word => word.trim()).filter(word => word.length > 0);
-    if (words.length > 0) {
-      onSave();
-    } else {
-      alert('저장할 내용이 없습니다.');
-    }
+    onSave();
   }
 
   const lineNumbers = Array.from({ length: Math.max(text.split('\n').length, 1) }, (_, i) => i + 1).join('\n');
