@@ -182,10 +182,38 @@ const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ ima
     const newHistory = history.slice(0, -1);
     setHistory(newHistory);
 
-    drawCtx.clearRect(0, 0, drawCanvasRef.current.width, drawCanvasRef.current.height);
+    const canvas = drawCanvasRef.current;
+    const ctx = drawCtx;
 
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Redraw the base image first
+    if (imageUrl && imageUrl !== 'empty.png') {
+      const img = new Image();
+      img.src = imageUrl;
+      img.onload = () => {
+        if (drawCtx && drawCanvasRef.current) {
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          // Then put back the red pen marks if any
+          if (newHistory.length > 0) {
+            ctx.putImageData(newHistory[newHistory.length - 1], 0, 0);
+          }
+        }
+      };
+      img.onerror = (e) => console.error("Error loading image for Undo redraw:", e);
+    } else if (imageUrl === 'empty.png') {
+      // If no base image, draw placeholder text
+      ctx.fillStyle = '#94a3b8'; // slate-400
+      ctx.font = '24px Noto Sans KR, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('입력 안 함', canvas.width / 2, canvas.height / 2);
+    }
+
+    // If there are still red pen marks in history, put the last one back
     if (newHistory.length > 0) {
-      drawCtx.putImageData(newHistory[newHistory.length - 1], 0, 0);
+      ctx.putImageData(newHistory[newHistory.length - 1], 0, 0);
     }
   };
   

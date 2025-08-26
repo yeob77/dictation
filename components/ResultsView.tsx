@@ -135,7 +135,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
         </div>
       </div>
       
-      <div className={`w-full flex-grow pr-2 rounded-lg bg-slate-50/50 shadow-inner p-2 ${isAnyCanvasDrawing ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+      <div className={`w-full flex-grow pr-2 rounded-lg bg-slate-50/50 shadow-inner p-2 ${isAnyCanvasDrawing ? 'overflow-hidden touch-action-none' : 'overflow-y-auto'}`}>
         <ul className="space-y-3">
           {dictations.map((item, index) => (
             <li key={index} className="p-3 rounded-lg bg-white shadow-sm border border-slate-200 touch-action-none">
