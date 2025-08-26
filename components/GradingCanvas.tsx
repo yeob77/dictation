@@ -10,9 +10,10 @@ export interface GradingCanvasHandle {
 
 interface GradingCanvasProps {
   imageUrl: string;
+  onDrawingChange?: (isDrawing: boolean) => void; // New prop
 }
 
-const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ imageUrl }, ref) => {
+const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ imageUrl, onDrawingChange }, ref) => {
   const drawCanvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawCtx, setDrawCtx] = useState<CanvasRenderingContext2D | null>(null);
@@ -151,6 +152,7 @@ const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ ima
     drawCtx.beginPath();
     drawCtx.moveTo(x, y);
     setIsDrawing(true);
+    onDrawingChange?.(true); // Notify parent that drawing has started
   };
 
   const draw = (event: React.MouseEvent | React.TouchEvent) => {
@@ -165,6 +167,7 @@ const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ ima
     if (!isDrawing || !drawCtx) return;
     drawCtx.closePath();
     setIsDrawing(false);
+    onDrawingChange?.(false); // Notify parent that drawing has stopped
 
     const canvas = drawCanvasRef.current;
     if (canvas) {

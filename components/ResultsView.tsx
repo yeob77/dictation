@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Dictation } from '../types';
 import { RestartIcon, CheckIcon, XIcon, DownloadIcon, PencilIcon, BackIcon, UndoIcon } from './icons';
@@ -20,6 +20,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
   const totalCount = dictations.length;
   const score = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
   const gradingCanvasRefs = useRef<(GradingCanvasHandle | null)[]>([]);
+  const [isAnyCanvasDrawing, setIsAnyCanvasDrawing] = useState(false); // New state
 
   const handleGrade = (index: number, isCorrect: boolean) => {
     const newDictations = [...dictations];
@@ -134,7 +135,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
         </div>
       </div>
       
-      <div className="w-full flex-grow overflow-y-auto pr-2 rounded-lg bg-slate-50/50 shadow-inner p-2">
+      <div className={`w-full flex-grow pr-2 rounded-lg bg-slate-50/50 shadow-inner p-2 ${isAnyCanvasDrawing ? 'overflow-hidden' : 'overflow-y-auto'}`}>
         <ul className="space-y-3">
           {dictations.map((item, index) => (
             <li key={index} className="p-3 rounded-lg bg-white shadow-sm border border-slate-200 touch-action-none">
@@ -146,7 +147,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
                 </div>
 
                 <div className="md:col-span-5 w-full">
-                  <GradingCanvas ref={el => { gradingCanvasRefs.current[index] = el; }} imageUrl={item.handwrittenImage} />
+                  <GradingCanvas ref={el => { gradingCanvasRefs.current[index] = el; }} imageUrl={item.handwrittenImage} onDrawingChange={setIsAnyCanvasDrawing} />
                 </div>
                 
                 <div className="md:col-span-3 flex items-center justify-center gap-2">
