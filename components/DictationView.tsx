@@ -119,7 +119,7 @@ const DictationView: React.FC<DictationViewProps> = ({ dictations, onFinish, onB
 
       <div className="flex items-start justify-between mb-0.5 sm:mb-4 flex-shrink-0">
         <div>
-          <p className="text-xxs sm:text-lg text-slate-500">문제 {currentIdx + 1} / {dictations.length}</p>
+          <p className="text-xxs sm:text-lg text-slate-500 landscape:hidden">문제 {currentIdx + 1} / {dictations.length}</p>
           <h2 className="text-base sm:text-2xl font-bold text-slate-700 mt-1">따라 써보세요</h2>
         </div>
         <div className="flex items-center gap-0.5 sm:gap-4">
@@ -142,7 +142,7 @@ const DictationView: React.FC<DictationViewProps> = ({ dictations, onFinish, onB
             <div className="flex items-center gap-0.5 sm:gap-4">
                 <div className="flex flex-col items-end gap-0.5 sm:gap-2">
                     <div className="flex items-center gap-0.5">
-                        <span className="text-xxs sm:text-sm font-semibold text-slate-500">읽기 속도</span>
+                        <span className="text-xxs sm:text-sm font-semibold text-slate-500 landscape:hidden">읽기 속도</span>
                         <div className="flex items-center gap-0.5 bg-slate-100 p-0.5 rounded-full shadow-inner">
                             {SPEEDS.map(({ label, value }) => (
                               <button
@@ -157,7 +157,7 @@ const DictationView: React.FC<DictationViewProps> = ({ dictations, onFinish, onB
                     </div>
                      {voices.length > 0 && (
                       <div className="flex items-center gap-0.5">
-                        <span className="text-xxs sm:text-sm font-semibold text-slate-500">목소리 선택</span>
+                        <span className="text-xxs sm:text-sm font-semibold text-slate-500 landscape:hidden">목소리 선택</span>
                          <select
                           value={selectedVoice?.name || ''}
                           onChange={(e) => handleSelectVoice(e.target.value)}
