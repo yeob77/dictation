@@ -44,6 +44,40 @@ const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ ima
     }
   }, [imageUrl]);
 
+  // Effect to load initial image (handwritten content)
+  useEffect(() => {
+    if (!drawCtx || !drawCanvasRef.current) return;
+
+    const canvas = drawCanvasRef.current;
+    const ctx = drawCtx;
+
+    // Clear the canvas before drawing new image
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (imageUrl && imageUrl !== 'empty.png') {
+      const img = new Image();
+      img.src = imageUrl;
+      img.onload = () => {
+        if (drawCtx && drawCanvasRef.current) {
+          // Draw the handwritten image as background
+          drawCtx.drawImage(img, 0, 0, drawCanvasRef.current.width, drawCanvasRef.current.height);
+          // Restore any red pen marks from history if available
+          if (history.length > 0) {
+            drawCtx.putImageData(history[history.length - 1], 0, 0);
+          }
+        }
+      };
+      img.onerror = (e) => console.error("Error loading image for GradingCanvas:", e);
+    } else if (imageUrl === 'empty.png') {
+      // Draw placeholder text if image is explicitly empty
+      ctx.fillStyle = '#94a3b8'; // slate-400
+      ctx.font = '24px Noto Sans KR, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('입력 안 함', canvas.width / 2, canvas.height / 2);
+    }
+  }, [imageUrl, drawCtx]); // Re-run when imageUrl or drawCtx changes
+
   useImperativeHandle(ref, () => ({
     getCombinedImage: async (): Promise<string> => {
       const combinedCanvas = document.createElement('canvas');
@@ -59,10 +93,8 @@ const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ ima
       combinedCtx.fillStyle = 'white';
       combinedCtx.fillRect(0, 0, combinedCanvas.width, combinedCanvas.height);
 
-      const showPlaceholder = !imageUrl || imageUrl === 'empty.png';
-  
       // 2. Draw handwritten image (now transparent) on top of the white background
-      if (!showPlaceholder) {
+      if (imageUrl && imageUrl !== 'empty.png') {
           const bgImg = new Image();
           bgImg.crossOrigin = "anonymous";
           bgImg.src = imageUrl;
@@ -71,7 +103,7 @@ const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ ima
               bgImg.onerror = reject;
           });
           combinedCtx.drawImage(bgImg, 0, 0, combinedCanvas.width, combinedCanvas.height);
-      } else {
+      } else if (imageUrl === 'empty.png') {
           // If there was no handwriting, draw a placeholder text.
           combinedCtx.fillStyle = '#94a3b8'; // slate-400
           combinedCtx.font = '24px Noto Sans KR, sans-serif';
