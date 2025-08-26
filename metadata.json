@@ -1,0 +1,5 @@
+{
+  "name": "Korean Dictation Pal",
+  "description": "An interactive web application for children to practice Korean dictation. Parents input a list of words or sentences, and the app reads them aloud. The child writes the answer on a digital canvas, which is then transcribed and graded using AI.",
+  "requestFramePermissions": []
+}
