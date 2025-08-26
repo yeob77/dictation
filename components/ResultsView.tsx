@@ -137,7 +137,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
       <div className="w-full flex-grow overflow-y-auto pr-2 rounded-lg bg-slate-50/50 shadow-inner p-2">
         <ul className="space-y-3">
           {dictations.map((item, index) => (
-            <li key={index} className="p-3 rounded-lg bg-white shadow-sm border border-slate-200">
+            <li key={index} className="p-3 rounded-lg bg-white shadow-sm border border-slate-200 touch-action-none">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-4 w-full items-center">
                 
                 <div className="md:col-span-4">
