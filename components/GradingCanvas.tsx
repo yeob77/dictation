@@ -28,6 +28,8 @@ const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ ima
       ctx.lineJoin = 'round';
       ctx.strokeStyle = PEN_COLOR;
       ctx.lineWidth = PEN_WIDTH;
+      ctx.imageSmoothingEnabled = true; // Enable anti-aliasing
+      ctx.imageSmoothingQuality = 'high'; // Set quality to high
       setDrawCtx(ctx);
     }
   }, []);
@@ -111,7 +113,7 @@ const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ ima
   };
 
   const startDrawing = (event: React.MouseEvent | React.TouchEvent) => {
-    event.preventDefault();
+    // event.preventDefault(); // Handled in JSX
     if (!drawCtx) return;
     const { x, y } = getCoords(event);
     drawCtx.beginPath();
@@ -120,7 +122,7 @@ const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ ima
   };
 
   const draw = (event: React.MouseEvent | React.TouchEvent) => {
-    event.preventDefault();
+    // event.preventDefault(); // Handled in JSX
     if (!isDrawing || !drawCtx) return;
     const { x, y } = getCoords(event);
     drawCtx.lineTo(x, y);
@@ -154,22 +156,9 @@ const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ ima
   
   const showPlaceholder = !imageUrl || imageUrl === 'empty.png';
   
-  const containerStyle: React.CSSProperties = {
-    touchAction: isDrawing ? 'none' : 'pan-y',
-  };
-
-  if (!showPlaceholder) {
-    containerStyle.backgroundImage = `url(${imageUrl})`;
-    containerStyle.backgroundSize = 'contain';
-    containerStyle.backgroundPosition = 'center';
-    containerStyle.backgroundRepeat = 'no-repeat';
-  }
-
-
   return (
     <div 
       className="relative w-full h-36 bg-white border border-slate-200 rounded-lg flex items-center justify-center shadow-inner"
-      style={containerStyle}
     >
       {showPlaceholder ? (
         <p className="text-slate-400">입력 안 함</p>
@@ -179,14 +168,14 @@ const GradingCanvas = forwardRef<GradingCanvasHandle, GradingCanvasProps>(({ ima
             ref={drawCanvasRef}
             width={400}
             height={300}
-            className="absolute top-0 left-0 w-full h-full rounded-lg"
+            className="absolute top-0 left-0 w-full h-full rounded-lg touch-action-none"
             onMouseDown={startDrawing}
             onMouseMove={draw}
             onMouseUp={stopDrawing}
             onMouseLeave={stopDrawing}
-            onTouchStart={startDrawing}
-            onTouchMove={draw}
-            onTouchEnd={stopDrawing}
+            onTouchStart={(e) => { e.preventDefault(); startDrawing(e); }}
+            onTouchMove={(e) => { e.preventDefault(); draw(e); }}
+            onTouchEnd={(e) => { e.preventDefault(); stopDrawing(); }}
           />
           {history.length > 0 && (
             <button
