@@ -1,11 +1,17 @@
 export enum AppState {
-  SETUP = 'SETUP',
-  DICTATION = 'DICTATION',
-  RESULTS = 'RESULTS',
+  SETUP,
+  DICTATION,
+  RESULTS,
 }
 
 export interface Dictation {
   originalWord: string;
-  handwrittenImage: string; // base64 data URL
-  isCorrect: boolean | null; // null: not graded, true: correct, false: incorrect
+  handwrittenImage: string;
+  isCorrect: boolean | null;
 }
+
+export interface SavedText {
+  id: string;
+  content: string;
+}
+

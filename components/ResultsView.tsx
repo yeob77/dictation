@@ -204,8 +204,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
         )}
         <TactileButton
           onClick={onRetry}
-          disabled={false}
-          className="bg-white text-slate-700 border-slate-300 hover:bg-slate-50 focus:ring-orange-400"
+          className="bg-sky-400 text-white border-sky-600 hover:bg-sky-500 focus:ring-sky-400 disabled:bg-slate-300 disabled:border-slate-400 disabled:text-slate-500"
         >
           <RestartIcon className="w-5 h-5" />
           같은 문제 다시 풀기
