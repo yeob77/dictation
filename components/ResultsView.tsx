@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Dictation } from '../types';
-import { RestartIcon, CheckIcon, XIcon, DownloadIcon } from './icons';
+import { RestartIcon, CheckIcon, XIcon, DownloadIcon, PencilIcon, BackIcon, UndoIcon } from './icons';
 import GradingCanvas, { GradingCanvasHandle } from './GradingCanvas';
 
 interface ResultsViewProps {
@@ -39,18 +40,15 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
     canvas.width = CANVAS_WIDTH;
     canvas.height = HEADER_HEIGHT + (dictations.length * ROW_HEIGHT);
 
-    // White background
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Header
-    ctx.fillStyle = '#1e293b'; // slate-800
+    ctx.fillStyle = '#1e293b';
     ctx.font = 'bold 32px Noto Sans KR, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('받아쓰기 채점 결과', canvas.width / 2, HEADER_HEIGHT / 2);
     
-    // Column positions
     const col1_x = PADDING;
     const col2_x = 300;
     const col3_x = CANVAS_WIDTH - PADDING - 80;
@@ -62,9 +60,8 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
 
         const yPos = HEADER_HEIGHT + (i * ROW_HEIGHT);
         
-        // Draw separator
         if (i > 0) {
-            ctx.strokeStyle = '#e2e8f0'; // slate-200
+            ctx.strokeStyle = '#e2e8f0';
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(PADDING, yPos);
@@ -74,14 +71,12 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
 
         const contentY = yPos + ROW_HEIGHT / 2;
 
-        // Column 1: Correct answer
-        ctx.fillStyle = '#334155'; // slate-700
+        ctx.fillStyle = '#334155';
         ctx.font = 'bold 24px Noto Sans KR, sans-serif';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
         ctx.fillText(`${i+1}. ${item.originalWord}`, col1_x, contentY);
 
-        // Column 2: Graded image
         const imageDataUrl = await canvasRef.getCombinedImage();
         if (imageDataUrl) {
             const img = new Image();
@@ -100,7 +95,6 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
             ctx.drawImage(img, imgX, imgY, imgW, imgH);
         }
         
-        // Column 3: Grade
         const grade = item.isCorrect === true ? '✅' : '❌';
         if (item.isCorrect !== null) {
             ctx.font = '48px sans-serif';
@@ -109,14 +103,13 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
         }
     }
 
-    // Download
     const link = document.createElement('a');
     link.download = '받아쓰기-결과.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
   };
 
-  const TactileButton = ({ onClick, disabled, children, className = '' }: { onClick: React.MouseEventHandler<HTMLButtonElement>; disabled: boolean; children: React.ReactNode; className?: string; }) => (
+  const TactileButton = ({ onClick, disabled, children, className = '' }: { onClick: React.MouseEventHandler<HTMLButtonElement>; disabled?: boolean; children: React.ReactNode; className?: string; }) => (
     <button
       onClick={onClick}
       disabled={disabled}
@@ -127,7 +120,12 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
   );
 
   return (
-    <div className="flex flex-col items-center h-full">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="flex flex-col items-center h-full w-full"
+    >
       <div className="text-center flex-shrink-0">
         <h2 className="text-2xl font-bold text-slate-700">직접 채점하기</h2>
         <div className="my-4">
@@ -185,7 +183,6 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
         {isPracticeSession && (
           <TactileButton
             onClick={onRetryOriginal}
-            disabled={false}
             className="bg-white text-slate-700 border-slate-300 hover:bg-slate-50 focus:ring-orange-400"
           >
             <RestartIcon className="w-5 h-5" />
@@ -195,7 +192,6 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
         {incorrectCount > 0 && (
           <TactileButton
             onClick={onPracticeMistakes}
-            disabled={false}
             className="bg-amber-400 text-white border-amber-600 hover:bg-amber-500 focus:ring-amber-400"
           >
             <RestartIcon className="w-5 h-5" />
@@ -204,14 +200,13 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
         )}
         <TactileButton
           onClick={onRetry}
-          className="bg-sky-400 text-white border-sky-600 hover:bg-sky-500 focus:ring-sky-400 disabled:bg-slate-300 disabled:border-slate-400 disabled:text-slate-500"
+          className="bg-sky-400 text-white border-sky-600 hover:bg-sky-500 focus:ring-sky-400"
         >
           <RestartIcon className="w-5 h-5" />
           같은 문제 다시 풀기
         </TactileButton>
         <TactileButton
           onClick={onRestart}
-          disabled={false}
           className="bg-sky-400 text-white border-sky-600 hover:bg-sky-500 focus:ring-sky-400"
         >
           <RestartIcon className="w-5 h-5" />
@@ -219,14 +214,13 @@ const ResultsView: React.FC<ResultsViewProps> = ({ dictations, onUpdate, onResta
         </TactileButton>
          <TactileButton
           onClick={handleSaveImage}
-          disabled={false}
           className="bg-slate-500 text-white border-slate-700 hover:bg-slate-600 focus:ring-slate-500"
         >
           <DownloadIcon className="w-5 h-5" />
           결과 저장
         </TactileButton>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

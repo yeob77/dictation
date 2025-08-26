@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { BookOpenIcon, TrashIcon, ClipboardListIcon } from './icons';
 
 interface SavedDictationsProps {
@@ -7,19 +8,25 @@ interface SavedDictationsProps {
   onDelete: (id: string) => void;
 }
 
+const animationProps = {
+  initial: { opacity: 0, y: -15 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.3, ease: "easeOut" },
+};
+
 const SavedDictations: React.FC<SavedDictationsProps> = ({ savedTexts, onSelect, onDelete }) => {
   if (savedTexts.length === 0) {
     return (
-      <div className="w-full mt-6 p-4 text-center bg-white/50 rounded-lg shadow-inner">
+      <motion.div {...animationProps} className="w-full mt-6 p-4 text-center bg-white/50 rounded-lg shadow-inner">
         <ClipboardListIcon className="w-12 h-12 mx-auto text-slate-400" />
         <h3 className="mt-2 text-lg font-bold text-slate-600">저장된 목록 없음</h3>
         <p className="mt-1 text-sm text-slate-500">첫 받아쓰기 내용을 저장해보세요!</p>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="w-full mt-6 p-4 bg-white/50 rounded-lg shadow-inner">
+    <motion.div {...animationProps} className="w-full mt-6 p-4 bg-white/50 rounded-lg shadow-inner">
       <h3 className="text-lg font-bold text-slate-600 mb-3">저장된 목록</h3>
       <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
         {savedTexts.map((text) => (
@@ -48,7 +55,7 @@ const SavedDictations: React.FC<SavedDictationsProps> = ({ savedTexts, onSelect,
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
