@@ -117,13 +117,13 @@ const DictationView: React.FC<DictationViewProps> = ({ dictations, onFinish, onB
         </button>
       </div>
 
-      <div className="flex items-start justify-between mb-1 sm:mb-4 flex-shrink-0">
+      <div className="flex items-start justify-between mb-0.5 sm:mb-4 flex-shrink-0">
         <div>
-          <p className="text-xs sm:text-lg text-slate-500">문제 {currentIdx + 1} / {dictations.length}</p>
-          <h2 className="text-lg sm:text-2xl font-bold text-slate-700 mt-1">따라 써보세요</h2>
+          <p className="text-xxs sm:text-lg text-slate-500">문제 {currentIdx + 1} / {dictations.length}</p>
+          <h2 className="text-base sm:text-2xl font-bold text-slate-700 mt-1">따라 써보세요</h2>
         </div>
-        <div className="flex items-center gap-1 sm:gap-4">
-            <div className="flex items-center gap-1 bg-slate-100/50 backdrop-blur-sm p-1 rounded-full shadow-sm">
+        <div className="flex items-center gap-0.5 sm:gap-4">
+            <div className="flex items-center gap-0.5 bg-slate-100/50 backdrop-blur-sm p-0.5 rounded-full shadow-sm">
                 <ToolButton label="연필" currentTool={tool} toolName="pen" onClick={() => setTool('pen')}>
                     <PencilIcon className="w-5 h-5" />
                 </ToolButton>
@@ -139,16 +139,16 @@ const DictationView: React.FC<DictationViewProps> = ({ dictations, onFinish, onB
                   <ClearIcon className="w-5 h-5" />
                 </button>
             </div>
-            <div className="flex items-center gap-1 sm:gap-4">
+            <div className="flex items-center gap-0.5 sm:gap-4">
                 <div className="flex flex-col items-end gap-0.5 sm:gap-2">
-                    <div className="flex items-center gap-1">
-                        <span className="text-xs sm:text-sm font-semibold text-slate-500">읽기 속도</span>
+                    <div className="flex items-center gap-0.5">
+                        <span className="text-xxs sm:text-sm font-semibold text-slate-500">읽기 속도</span>
                         <div className="flex items-center gap-0.5 bg-slate-100 p-0.5 rounded-full shadow-inner">
                             {SPEEDS.map(({ label, value }) => (
                               <button
                                 key={label}
                                 onClick={() => setSpeechRate(value)}
-                                className={`px-1.5 sm:px-3 py-0.5 text-xs sm:text-sm font-bold rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-orange-400 ${speechRate === value ? 'bg-sky-400 text-white shadow' : 'text-slate-500 hover:bg-white'}`}
+                                className={`px-1 sm:px-3 py-0 text-xxs sm:text-sm font-bold rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-orange-400 ${speechRate === value ? 'bg-sky-400 text-white shadow' : 'text-slate-500 hover:bg-white'}`}
                               >
                                 {label}
                               </button>
@@ -156,12 +156,12 @@ const DictationView: React.FC<DictationViewProps> = ({ dictations, onFinish, onB
                         </div>
                     </div>
                      {voices.length > 0 && (
-                      <div className="flex items-center gap-1">
-                        <span className="text-xs sm:text-sm font-semibold text-slate-500">목소리 선택</span>
+                      <div className="flex items-center gap-0.5">
+                        <span className="text-xxs sm:text-sm font-semibold text-slate-500">목소리 선택</span>
                          <select
                           value={selectedVoice?.name || ''}
                           onChange={(e) => handleSelectVoice(e.target.value)}
-                          className="text-xs sm:text-sm font-semibold text-slate-600 bg-slate-100 border-none rounded-full shadow-inner focus:ring-2 focus:ring-orange-400 py-0.5 sm:py-1.5 pl-1.5 pr-4 sm:pl-3 sm:pr-8"
+                          className="text-xxs sm:text-sm font-semibold text-slate-600 bg-slate-100 border-none rounded-full shadow-inner focus:ring-2 focus:ring-orange-400 py-0 sm:py-1.5 pl-1 pr-3 sm:pl-3 sm:pr-8"
                         >
                           {voices.map(voice => (
                             <option key={voice.name} value={voice.name}>
@@ -176,9 +176,9 @@ const DictationView: React.FC<DictationViewProps> = ({ dictations, onFinish, onB
                 <button
                   onClick={handleListen}
                   disabled={isSpeaking}
-                  className={`flex-shrink-0 flex items-center justify-center w-12 h-12 sm:w-24 sm:h-24 bg-sky-100 rounded-full text-sky-600 hover:bg-sky-200 transition-all duration-150 border-b-4 border-sky-300 active:translate-y-px active:border-b-2 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-300 focus:outline-none focus:ring-4 focus:ring-sky-300 ${!initialWordSpoken ? 'animate-pulse' : ''}`}
+                  className={`flex-shrink-0 flex items-center justify-center w-10 h-10 sm:w-24 sm:h-24 bg-sky-100 rounded-full text-sky-600 hover:bg-sky-200 transition-all duration-150 border-b-4 border-sky-300 active:translate-y-px active:border-b-2 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-300 focus:outline-none focus:ring-4 focus:ring-sky-300 ${!initialWordSpoken ? 'animate-pulse' : ''}`}
                 >
-                  <SpeakerIcon className="w-6 h-6 sm:w-12 sm:h-12" isSpeaking={isSpeaking} />
+                  <SpeakerIcon className="w-5 h-5 sm:w-12 sm:h-12" isSpeaking={isSpeaking} />
                 </button>
             </div>
         </div>
@@ -193,7 +193,7 @@ const DictationView: React.FC<DictationViewProps> = ({ dictations, onFinish, onB
         />
       </div>
 
-      <div className="mt-auto pt-1 flex justify-center items-center gap-4 flex-shrink-0">
+      <div className="mt-auto pt-0.5 flex justify-center items-center gap-4 flex-shrink-0">
         <TactileButton
           onClick={handlePrev}
           disabled={currentIdx === 0}

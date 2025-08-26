@@ -168,9 +168,9 @@ const App: React.FC = () => {
     <div className="h-screen w-screen flex flex-col items-center justify-center p-4 sm:p-6">
       <Toaster position="bottom-center" />
        <main className="w-full max-w-5xl mx-auto flex flex-col h-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-2 sm:p-6 border border-white">
-        <header className="text-center mb-2 md:mb-4 flex-shrink-0 flex items-center justify-center gap-3">
-            <PencilBookIcon className="w-8 h-8 sm:w-12 sm:h-12 text-orange-400"/>
-            <h1 className="text-2xl sm:text-4xl font-black text-slate-700 tracking-tight">
+        <header className="text-center mb-2 md:mb-4 flex-shrink-0 flex items-center justify-center gap-3 landscape:gap-1">
+            <PencilBookIcon className="w-8 h-8 sm:w-12 sm:h-12 landscape:w-6 landscape:h-6 text-orange-400"/>
+            <h1 className="text-2xl sm:text-4xl font-black text-slate-700 tracking-tight landscape:text-xl">
                 <span className="text-orange-500">즐거운</span> 받아쓰기
             </h1>
         </header>
